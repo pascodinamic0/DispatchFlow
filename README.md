@@ -80,20 +80,34 @@ supabase/         # SQL migrations
 
 ## Deploy on Vercel
 
-1. Import `github.com/pascodinamic0/DispatchFlow` — **Root Directory** must be empty (repo root).
+Project: **`pascal-dignys-projects/dispatch-flow`** (GitHub: `pascodinamic0/DispatchFlow`).
+
+**Production URL (use this exact host):**
+
+`https://dispatch-flow-pascal-dignys-projects.vercel.app`
+
+Do **not** use `https://dispatch-flow.vercel.app` — that is a different Vercel project and returns `404 NOT_FOUND`.
+
+### Setup checklist
+
+1. Import the repo — **Root Directory** must be empty (repo root).
 2. Add env vars from `.env.local.example` (at minimum the two `NEXT_PUBLIC_SUPABASE_*` keys).
-3. Set `NEXT_PUBLIC_SITE_URL` to your **Production** URL from step 4 (not a guess).
-4. After deploy is **Ready**, open **Deployments → Production → Visit** and copy that exact `*.vercel.app` URL.
-5. In Supabase **Authentication → URL configuration**, set Site URL and redirect URL to that same host + `/auth/callback`.
+3. Set `NEXT_PUBLIC_SITE_URL` to `https://dispatch-flow-pascal-dignys-projects.vercel.app` (or your custom domain once added).
+4. In Supabase **Authentication → URL configuration**, set Site URL and redirect URL to that host + `/auth/callback`.
 
-### `404: NOT_FOUND` on the live URL
+### `404: NOT_FOUND`
 
-This is a [Vercel platform error](https://vercel.com/docs/errors/not-found): the hostname has **no active deployment** (wrong URL, deleted preview, or domain not assigned). It is not the Next.js app 404 page.
+[Vercel platform error](https://vercel.com/docs/errors/not-found) — wrong hostname or no deployment on that domain.
 
-- Use the **Visit** link on the latest green Production deployment — do not reuse old preview URLs.
-- **Settings → Domains**: confirm your custom domain (if any) is assigned to **Production**.
-- **Settings → Git**: Production Branch = `main`.
-- If builds succeed but the site 404s, click **Promote to Production** on the latest `main` deployment.
+- Open **Deployments → latest Ready → Visit** and compare the URL in your browser.
+- If it differs from the production URL above, update bookmarks and `NEXT_PUBLIC_SITE_URL`.
+
+### Site shows “Authentication Required” / Vercel login wall
+
+**Settings → Deployment Protection** may be blocking public access. For a public app:
+
+- Set **Production** protection to **None** (or “Only Preview Deployments”), then redeploy.
+- Or sign in with the Vercel account that owns the project when visiting the URL.
 
 ## Vision
 
