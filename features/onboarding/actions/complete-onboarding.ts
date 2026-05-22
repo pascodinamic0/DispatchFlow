@@ -26,13 +26,30 @@ export async function completeInvitedOnboarding(
 ): Promise<OnboardingActionState> {
   const fullName = formData.get("fullName");
   const department = formData.get("department");
+  const password = formData.get("password");
+  const confirmPassword = formData.get("confirmPassword");
 
   if (typeof fullName !== "string" || fullName.trim().length < 2) {
     return { error: "Full name is required" };
   }
 
+  if (typeof password !== "string" || password.length < 8) {
+    return { error: "Password must be at least 8 characters" };
+  }
+
+  if (password !== confirmPassword) {
+    return { error: "Passwords do not match" };
+  }
+
   try {
     const { supabase, user } = await requireUser();
+
+    const { error: passwordError } = await supabase.auth.updateUser({
+      password,
+    });
+    if (passwordError) {
+      return { error: passwordError.message };
+    }
     const existing = await getProfileByUserId(supabase, user.id);
     if (existing) redirect("/dashboard");
 

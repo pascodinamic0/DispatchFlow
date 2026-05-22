@@ -1,6 +1,10 @@
 import type { DbClient } from "@/lib/supabase/types";
 import { createAdminClient, hasAdminClient } from "@/lib/supabase/admin";
 import { mapSupabaseError } from "@/lib/supabase/errors";
+import {
+  assertSiteUrlConfiguredForInvites,
+  getAuthConfirmUrl,
+} from "@/lib/site-url";
 import type { Database, Profile, UserRole } from "@/types";
 
 
@@ -78,12 +82,11 @@ export async function createOrganizationInvite(
   if (error) throw mapSupabaseError(error);
 
   if (hasAdminClient()) {
+    assertSiteUrlConfiguredForInvites();
     const admin = createAdminClient();
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
     await admin.auth.admin.inviteUserByEmail(email, {
-      redirectTo: `${siteUrl}/auth/callback?next=/onboarding`,
+      redirectTo: getAuthConfirmUrl("/onboarding"),
       data: {
         organization_id: input.organizationId,
         organization_name: input.organizationName,

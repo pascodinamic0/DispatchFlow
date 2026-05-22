@@ -19,7 +19,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function SignupForm() {
+type Props = {
+  defaultEmail?: string;
+};
+
+export function SignupForm({ defaultEmail }: Props) {
   const router = useRouter();
   const configured = hasSupabaseEnv();
 
@@ -29,7 +33,11 @@ export function SignupForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: {
+      email: defaultEmail ?? "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   async function onSubmit(values: SignupFormValues) {
@@ -56,7 +64,11 @@ export function SignupForm() {
   return (
     <AuthShell
       title="Create account"
-      description="Sign up, then set up your organization profile"
+      description={
+        defaultEmail
+          ? "Use the invited email address, then complete onboarding"
+          : "Sign up, then set up your organization profile"
+      }
     >
       <Card className="border-border/80 shadow-lg">
         <CardContent className="pt-6">

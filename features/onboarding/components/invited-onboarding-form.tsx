@@ -49,6 +49,33 @@ export function InvitedOnboardingForm({ organizationName, role }: Props) {
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          placeholder="At least 8 characters"
+          disabled={pending}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="confirmPassword">Confirm password</Label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          disabled={pending}
+        />
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="department">Department (optional)</Label>
         <Input
           id="department"

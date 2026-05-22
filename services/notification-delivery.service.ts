@@ -1,6 +1,7 @@
 import type { DbClient } from "@/lib/supabase/types";
 import { hasResendConfigured, sendEmail } from "@/lib/email/resend";
 import { mapSupabaseError } from "@/lib/supabase/errors";
+import { getSiteUrl } from "@/lib/site-url";
 import type { UserRole } from "@/types";
 
 
@@ -208,8 +209,7 @@ export async function notifyUsers(
     actorUserId?: string;
   },
 ) {
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   const uniqueIds = [
     ...new Set(

@@ -7,6 +7,7 @@ import { getErrorMessage } from "@/lib/errors";
 import { hasResendConfigured, sendEmail } from "@/lib/email/resend";
 import { assertPermission, canManageTeamRoles } from "@/lib/permissions";
 import { hasAdminClient } from "@/lib/supabase/admin";
+import { getSiteUrl } from "@/lib/site-url";
 import {
   createOrganizationInvite,
   listPendingInvites,
@@ -71,8 +72,8 @@ export async function inviteTeamMember(
       organizationName: organization.name,
     });
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    const siteUrl = getSiteUrl();
+    const signupUrl = `${siteUrl}/signup?email=${encodeURIComponent(parsed.data.email)}`;
 
     if (hasResendConfigured()) {
       await sendEmail({
@@ -80,14 +81,16 @@ export async function inviteTeamMember(
         subject: `You're invited to ${organization.name} on DispatchFlow`,
         html: `
           <p>You've been invited to join <strong>${organization.name}</strong> on DispatchFlow.</p>
-          <p>Check your inbox for the Supabase invite link, or sign up at <a href="${siteUrl}/signup">${siteUrl}/signup</a> with this email.</p>
+          <p><strong>Step 1:</strong> Open the invite email from Supabase and accept the invitation (you will set your password there).</p>
+          <p><strong>Step 2:</strong> Complete your profile on the onboarding screen.</p>
+          <p>If the invite link does not work, create an account with the same email: <a href="${signupUrl}">Sign up here</a>.</p>
         `,
       });
     }
 
     revalidatePath("/settings");
     return {
-      success: `Invite sent to ${parsed.data.email}`,
+      success: `Invite sent to ${parsed.data.email} (links use ${siteUrl})`,
     };
   } catch (error) {
     return { error: getErrorMessage(error) };

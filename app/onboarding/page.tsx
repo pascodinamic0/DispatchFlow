@@ -41,7 +41,7 @@ export default async function OnboardingPage() {
           <CardTitle className="text-2xl">Welcome to DispatchFlow</CardTitle>
           <CardDescription>
             {invite || invitedViaAuth
-              ? "Complete your profile to join your team workspace."
+              ? "Set your password and profile to join your team workspace."
               : "Create your organization workspace and profile to get started."}
           </CardDescription>
         </CardHeader>
