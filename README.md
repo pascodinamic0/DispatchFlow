@@ -84,21 +84,18 @@ Project: **`pascal-dignys-projects/dispatch-flow`** (GitHub: `pascodinamic0/Disp
 
 **Production URL (use this exact host):**
 
-`https://dispatch-flow-pascal-dignys-projects.vercel.app`
+`https://dispatch-flow-one.vercel.app`
 
-Do **not** use:
+Do **not** use `https://dispatch-flow-pascal-dignys-projects.vercel.app` for invites or Supabase redirects — it shows a **Vercel login** wall to the public.
 
-- `https://dispatch-flow.vercel.app` — different project
-- `https://dispatch-flow-one.vercel.app` — returns `404 NOT_FOUND` (broken alias)
-
-**If the site 404s or shows Vercel login:** follow [docs/VERCEL_LIVE_FIX.md](docs/VERCEL_LIVE_FIX.md) (disable Deployment Protection + fix domains).
+**Auth / invites:** [docs/SUPABASE_AUTH_URLS.md](docs/SUPABASE_AUTH_URLS.md) · **Vercel:** [docs/VERCEL_LIVE_FIX.md](docs/VERCEL_LIVE_FIX.md)
 
 ### Setup checklist
 
 1. Import the repo — **Root Directory** must be empty (repo root).
 2. Add env vars from `.env.local.example` (at minimum the two `NEXT_PUBLIC_SUPABASE_*` keys).
-3. Set `NEXT_PUBLIC_SITE_URL` to `https://dispatch-flow-pascal-dignys-projects.vercel.app` (or your custom domain once added).
-4. In Supabase **Authentication → URL configuration**, set Site URL and redirect URL to that host + `/auth/callback`.
+3. Set `NEXT_PUBLIC_SITE_URL` to `https://dispatch-flow-one.vercel.app`.
+4. In Supabase **Authentication → URL configuration**, set Site URL and redirect URLs to that host (`/auth/callback`, `/auth/confirm`).
 
 ### `404: NOT_FOUND`
 

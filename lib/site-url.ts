@@ -42,7 +42,7 @@ export function assertSiteUrlConfiguredForInvites(): void {
 
   if (process.env.VERCEL && (url.includes("localhost") || url.includes("127.0.0.1"))) {
     throw new Error(
-      "Set NEXT_PUBLIC_SITE_URL in Vercel to your production URL (e.g. https://dispatch-flow-pascal-dignys-projects.vercel.app) before sending invites.",
+      "Set NEXT_PUBLIC_SITE_URL in Vercel to your production URL (e.g. https://dispatch-flow-one.vercel.app) before sending invites.",
     );
   }
 }

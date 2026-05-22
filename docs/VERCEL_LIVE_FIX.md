@@ -1,54 +1,41 @@
-# Fix DispatchFlow on Vercel (NOT_FOUND / auth wall)
+# Fix DispatchFlow on Vercel
 
-Verified via Vercel API on **2026-05-22**:
+## Production URL (use this everywhere)
 
-| URL | Status |
-|-----|--------|
-| `https://dispatch-flow-one.vercel.app` | **404 NOT_FOUND** (broken — do not use) |
-| `https://dispatch-flow.vercel.app` | Wrong project / not linked |
-| `https://dispatch-flow-pascal-dignys-projects.vercel.app` | **App deployed** — blocked by **Deployment Protection** |
+**https://dispatch-flow-one.vercel.app**
 
-Builds are **READY**. The app code is fine. Fix is **Vercel project settings only**.
+This is the public production domain assigned in Vercel. Invite links, Supabase auth, and `NEXT_PUBLIC_SITE_URL` must use this host.
 
-## Step 1 — Open the correct project
+| URL | Use? |
+|-----|------|
+| `https://dispatch-flow-one.vercel.app` | **Yes** — public production |
+| `https://dispatch-flow-pascal-dignys-projects.vercel.app` | **No** — team-only (Vercel login wall) |
+| `https://dispatch-flow.vercel.app` | **No** — different / unrelated project |
+
+If invitees see **“Log in to Vercel”**, the invite `redirectTo` is probably pointing at `dispatch-flow-pascal-dignys-projects.vercel.app` instead of `dispatch-flow-one.vercel.app`. Fix env + Supabase URLs below, then send a **new** invite.
+
+## Vercel project
 
 https://vercel.com/pascal-dignys-projects/dispatch-flow
 
-## Step 2 — Turn off Deployment Protection (required)
+### Environment variables (Production)
 
-1. **Settings → Deployment Protection**
-2. Under **Production**, set protection to **None** (public site)
-3. Save
+```
+NEXT_PUBLIC_SITE_URL=https://dispatch-flow-one.vercel.app
+NEXT_PUBLIC_SUPABASE_URL=<your supabase url>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your anon key>
+```
 
-Without this, visitors see Vercel login / SSO, not DispatchFlow.
+Redeploy after saving.
 
-## Step 3 — Use the working production URL
+### Domains
 
-**https://dispatch-flow-pascal-dignys-projects.vercel.app**
+**Settings → Domains** — confirm **Production** is assigned to `dispatch-flow-one.vercel.app`.
 
-Click **Deployments → Production (latest Ready) → Visit** and confirm the hostname matches.
+### Optional: `dispatch-flow-pascal-dignys-projects.vercel.app`
 
-## Step 4 — Remove or fix the broken domain (if you added it)
+That hostname is useful for preview/team access but is **not** suitable for customer or teammate invite links unless you disable **Deployment Protection** on it.
 
-If you use **`dispatch-flow-one.vercel.app`** and see `404 NOT_FOUND`:
+## Supabase
 
-1. **Settings → Domains**
-2. Remove `dispatch-flow-one.vercel.app`, **or** wait until DNS shows “Valid Configuration”
-3. Prefer the default `dispatch-flow-pascal-dignys-projects.vercel.app`
-
-## Step 5 — Environment variables
-
-In **Settings → Environment Variables** (Production):
-
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `NEXT_PUBLIC_SITE_URL` = `https://dispatch-flow-pascal-dignys-projects.vercel.app`
-
-Redeploy after changes.
-
-## Step 6 — Supabase auth URLs
-
-**Authentication → URL configuration**:
-
-- Site URL: `https://dispatch-flow-pascal-dignys-projects.vercel.app`
-- Redirect: `https://dispatch-flow-pascal-dignys-projects.vercel.app/auth/callback`
+See [SUPABASE_AUTH_URLS.md](./SUPABASE_AUTH_URLS.md) — Site URL and redirect URLs must use `https://dispatch-flow-one.vercel.app`.
