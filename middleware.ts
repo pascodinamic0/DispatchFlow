@@ -1,4 +1,3 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 const PUBLIC_PREFIXES = [
@@ -21,61 +20,29 @@ function isPublicPath(pathname: string) {
   );
 }
 
-export async function middleware(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+/** Supabase SSR stores session chunks as sb-<ref>-auth-token(.N)? */
+function hasSupabaseSession(request: NextRequest) {
+  return request.cookies.getAll().some(
+    ({ name }) => name.startsWith("sb-") && name.includes("auth-token"),
+  );
+}
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return NextResponse.next({ request });
+export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const hasSession = hasSupabaseSession(request);
+
+  if (!hasSession && !isPublicPath(pathname)) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  try {
-    let supabaseResponse = NextResponse.next({ request });
-
-    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
-          supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
-        },
-      },
-    });
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const pathname = request.nextUrl.pathname;
-
-    if (!user && !isPublicPath(pathname)) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-
-    if (
-      user &&
-      (pathname === "/login" ||
-        pathname === "/signup" ||
-        pathname === "/")
-    ) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
-    }
-
-    return supabaseResponse;
-  } catch {
-    return NextResponse.next({ request });
+  if (
+    hasSession &&
+    (pathname === "/login" || pathname === "/signup" || pathname === "/")
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
