@@ -25,7 +25,7 @@ export async function listLineItemsForRequest(
   const { data, error } = await supabase
     .from("request_line_items")
     .select(
-      "*, item:inventory_items(id, sku, name, unit, quantity_on_hand)",
+      "*, item:inventory_items!inventory_item_id(id, sku, name, unit, quantity_on_hand)",
     )
     .eq("request_id", requestId)
     .order("created_at", { ascending: true });
