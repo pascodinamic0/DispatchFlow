@@ -1,0 +1,13 @@
+.DS_Store
+*.pem
+
+# Next.js app
+dispatchflow/node_modules/
+dispatchflow/.next/
+dispatchflow/out/
+dispatchflow/build/
+dispatchflow/.vercel/
+dispatchflow/.env*
+dispatchflow/*.tsbuildinfo
+dispatchflow/.pnp
+dispatchflow/.pnp.*
