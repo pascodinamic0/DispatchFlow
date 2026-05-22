@@ -86,7 +86,12 @@ Project: **`pascal-dignys-projects/dispatch-flow`** (GitHub: `pascodinamic0/Disp
 
 `https://dispatch-flow-pascal-dignys-projects.vercel.app`
 
-Do **not** use `https://dispatch-flow.vercel.app` — that is a different Vercel project and returns `404 NOT_FOUND`.
+Do **not** use:
+
+- `https://dispatch-flow.vercel.app` — different project
+- `https://dispatch-flow-one.vercel.app` — returns `404 NOT_FOUND` (broken alias)
+
+**If the site 404s or shows Vercel login:** follow [docs/VERCEL_LIVE_FIX.md](docs/VERCEL_LIVE_FIX.md) (disable Deployment Protection + fix domains).
 
 ### Setup checklist
 
