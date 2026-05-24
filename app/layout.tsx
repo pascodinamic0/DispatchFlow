@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/providers/app-providers";
+import { brand } from "@/lib/brand";
+import { siteDefaultMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({
@@ -10,12 +12,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  ...siteDefaultMetadata,
   title: {
-    default: "DispatchFlow",
-    template: "%s | DispatchFlow",
+    default: brand.name,
+    template: `%s | ${brand.name}`,
   },
-  description:
-    "Request. Track. Deliver. — Internal logistics and procurement platform.",
   icons: {
     icon: "/dispatchflow-logo.svg",
   },

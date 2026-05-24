@@ -15,7 +15,8 @@ export const marketing = {
   nav: [
     { label: "Features", href: "/#features" },
     { label: "How it works", href: "/#workflow" },
-    { label: "Roles", href: "/#roles" },
+    { label: "Who it's for", href: "/#audience" },
+    { label: "Blog", href: "/blog" },
     { label: "FAQ", href: "/#faq" },
   ] as const,
   footer: {
@@ -27,6 +28,7 @@ export const marketing = {
     ],
     company: [
       { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contact" },
     ],
     legal: [

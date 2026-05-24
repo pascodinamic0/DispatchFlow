@@ -52,9 +52,10 @@ export function LandingHero() {
                 </span>
               </h1>
               <p className="max-w-lg text-lg leading-relaxed text-slate-300">
-                {brand.name} unifies procurement requests, shipment tracking, and
-                inventory in one calm, dashboard-first platform — designed for
-                teams who run logistics at scale.
+                Stop losing requests in email, dispatch status in WhatsApp, and
+                inventory in spreadsheets. {brand.name} gives your operations team
+                one system of record — procurement, shipments, and stock — built
+                for multi-branch enterprises across Africa.
               </p>
             </div>
 
