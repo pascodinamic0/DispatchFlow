@@ -1,7 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createDispatchSchema } from "@/features/dispatches/schemas/dispatch-schema";
+import {
+  createDispatchSchema,
+  updateDispatchAssignmentSchema,
+} from "@/features/dispatches/schemas/dispatch-schema";
 import { revalidateDispatches } from "@/lib/cache/revalidate";
 import { requireProfile } from "@/lib/auth/session";
 import { getErrorMessage } from "@/lib/errors";
@@ -177,6 +180,17 @@ export async function updateDispatchStatusAction(
       `Cannot change status from ${dispatch.status} to ${status}`,
     );
 
+    if (
+      status === "assigned" &&
+      !assigneeName?.trim() &&
+      !dispatch.assignee_name?.trim()
+    ) {
+      return {
+        error:
+          "Add an assignee in the assignment section below before marking as assigned.",
+      };
+    }
+
     const patch: Parameters<typeof updateDispatch>[2] = { status };
     if (assigneeName !== undefined) {
       patch.assigneeName = assigneeName || null;
@@ -190,6 +204,69 @@ export async function updateDispatchStatusAction(
     if (status === "delivered" && dispatch.request_id) {
       await updateRequestStatus(supabase, dispatch.request_id, "delivered");
     }
+
+    revalidateDispatches(dispatchId, dispatch.request_id ?? undefined);
+    return {};
+  } catch (error) {
+    return { error: getErrorMessage(error) };
+  }
+}
+
+export async function updateDispatchAssignmentAction(
+  dispatchId: string,
+  formData: FormData,
+  options?: { markAssigned?: boolean },
+): Promise<DispatchActionState> {
+  const parsed = updateDispatchAssignmentSchema.safeParse({
+    assigneeName: formData.get("assigneeName"),
+    origin: formData.get("origin"),
+    scheduledAt: formData.get("scheduledAt"),
+  });
+
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  }
+
+  try {
+    const { supabase, profile } = await requireProfile();
+    assertPermission(
+      canManageDispatches(profile.role),
+      "You do not have permission to update dispatches",
+    );
+
+    const dispatch = await getDispatchById(supabase, dispatchId);
+    if (!dispatch || dispatch.organization_id !== profile.organization_id) {
+      return { error: "Dispatch not found" };
+    }
+
+    if (dispatch.status === "delivered" || dispatch.status === "cancelled") {
+      return { error: "This dispatch can no longer be edited" };
+    }
+
+    const assigneeName = parsed.data.assigneeName.trim();
+    const scheduledAt = parsed.data.scheduledAt
+      ? new Date(parsed.data.scheduledAt).toISOString()
+      : null;
+
+    const nextStatus =
+      options?.markAssigned && dispatch.status === "pending"
+        ? "assigned"
+        : dispatch.status;
+
+    if (
+      options?.markAssigned &&
+      dispatch.status === "pending" &&
+      !canTransitionDispatch(profile.role, dispatch.status, "assigned")
+    ) {
+      return { error: "Cannot mark this dispatch as assigned" };
+    }
+
+    await updateDispatch(supabase, dispatchId, {
+      assigneeName,
+      origin: parsed.data.origin?.trim() || null,
+      scheduledAt,
+      status: nextStatus,
+    });
 
     revalidateDispatches(dispatchId, dispatch.request_id ?? undefined);
     return {};

@@ -545,6 +545,14 @@ export interface Database {
         Args: Record<string, never>;
         Returns: UserRole | null;
       };
+      mark_notification_delivery_sent: {
+        Args: {
+          p_notification_id: string;
+          p_email_sent?: boolean;
+          p_push_sent?: boolean;
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
       user_role: UserRole;

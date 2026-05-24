@@ -19,4 +19,10 @@ export const updateDispatchStatusSchema = z.object({
   assigneeName: z.string().max(120).optional().or(z.literal("")),
 });
 
+export const updateDispatchAssignmentSchema = z.object({
+  assigneeName: z.string().min(1, "Assignee is required").max(120),
+  origin: z.string().max(200).optional().or(z.literal("")),
+  scheduledAt: z.string().optional().or(z.literal("")),
+});
+
 export type CreateDispatchFormValues = z.infer<typeof createDispatchSchema>;

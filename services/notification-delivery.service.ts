@@ -152,10 +152,12 @@ export async function deliverNotificationChannels(
   }
 
   if (Object.keys(updates).length > 0) {
-    await supabase
-      .from("notifications")
-      .update(updates)
-      .eq("id", notification.id);
+    const { error } = await supabase.rpc("mark_notification_delivery_sent", {
+      p_notification_id: notification.id,
+      p_email_sent: Boolean(updates.email_sent_at),
+      p_push_sent: Boolean(updates.push_sent_at),
+    });
+    if (error) throw mapSupabaseError(error);
   }
 }
 
@@ -200,7 +202,7 @@ async function sendWebPushToUser(
   }
 }
 
-export async function notifyUsers(
+async function notifyUsersInternal(
   supabase: DbClient,
   input: {
     organizationId: string;
@@ -268,6 +270,18 @@ export async function notifyUsers(
   const { revalidatePath } = await import("next/cache");
   revalidatePath("/", "layout");
   revalidatePath("/notifications");
+}
+
+/** Never fail the caller's primary action if notification delivery hits RLS or email errors. */
+export async function notifyUsers(
+  supabase: DbClient,
+  input: Parameters<typeof notifyUsersInternal>[1],
+) {
+  try {
+    await notifyUsersInternal(supabase, input);
+  } catch (error) {
+    console.error("[notifications] delivery failed:", error);
+  }
 }
 
 export async function notifyUsersWithRole(

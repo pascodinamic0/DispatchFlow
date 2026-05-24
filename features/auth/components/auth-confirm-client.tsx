@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
+
+/** Full navigation so the next Server Component request includes auth cookies. */
+function goToNext(path: string) {
+  const destination = path.startsWith("/") ? path : `/${path}`;
+  window.location.assign(destination);
+}
 
 export function AuthConfirmClient() {
   const router = useRouter();
@@ -16,12 +23,26 @@ export function AuthConfirmClient() {
     async function completeAuth() {
       const query = new URLSearchParams(window.location.search);
       const code = query.get("code");
+      const tokenHash = query.get("token_hash");
+      const type = query.get("type");
+
+      if (tokenHash && type) {
+        const { error } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: type as EmailOtpType,
+        });
+        if (!error) {
+          goToNext(next);
+          return;
+        }
+        setMessage(error.message);
+        return;
+      }
 
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (!error) {
-          router.replace(next);
-          router.refresh();
+          goToNext(next);
           return;
         }
         setMessage(error.message);
@@ -46,8 +67,7 @@ export function AuthConfirmClient() {
               "",
               `${window.location.pathname}${window.location.search}`,
             );
-            router.replace(next);
-            router.refresh();
+            goToNext(next);
             return;
           }
 
@@ -61,8 +81,7 @@ export function AuthConfirmClient() {
       } = await supabase.auth.getSession();
 
       if (session) {
-        router.replace(next);
-        router.refresh();
+        goToNext(next);
         return;
       }
 

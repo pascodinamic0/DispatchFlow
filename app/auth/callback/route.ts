@@ -31,7 +31,15 @@ export async function GET(request: Request) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const destination = next.startsWith("/") ? next : `/${next}`;
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      const meta = user?.user_metadata as Record<string, unknown> | undefined;
+      const invited = Boolean(meta?.invited);
+      let destination = next.startsWith("/") ? next : `/${next}`;
+      if (invited && (destination === "/dashboard" || destination === "dashboard")) {
+        destination = INVITE_NEXT;
+      }
       return NextResponse.redirect(`${siteUrl}${destination}`);
     }
   }
