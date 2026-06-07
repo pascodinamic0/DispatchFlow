@@ -39,6 +39,7 @@ export function ImageUploadField({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [savedUrl, setSavedUrl] = useState<string | null>(currentImageUrl ?? null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const previewRef = useRef<string | null>(null);
 
   useEffect(() => {
     setSavedUrl(currentImageUrl ?? null);
@@ -55,20 +56,34 @@ export function ImageUploadField({
     }
   }, [state.error, state.success, state.imageUrl, router]);
 
+  useEffect(() => {
+    return () => {
+      if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+    };
+  }, []);
+
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) {
       setPreviewUrl(null);
       return;
     }
-    setPreviewUrl(URL.createObjectURL(file));
+
+    if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+    const objectUrl = URL.createObjectURL(file);
+    previewRef.current = objectUrl;
+    setPreviewUrl(objectUrl);
+
+    const formData = new FormData();
+    formData.set("file", file);
+    formAction(formData);
   }
 
   const displayUrl = previewUrl ?? savedUrl ?? null;
   const isCircle = shape === "circle";
 
   return (
-    <form action={formAction} className="space-y-3">
+    <div className="space-y-3">
       <div className="space-y-1">
         <Label>{label}</Label>
         {description ? (
@@ -96,6 +111,11 @@ export function ImageUploadField({
               {fallbackLabel}
             </span>
           )}
+          {pending ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-background/70">
+              <Loader2 className="size-5 animate-spin text-primary" />
+            </div>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -103,7 +123,7 @@ export function ImageUploadField({
             ref={inputRef}
             type="file"
             name="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
             className="sr-only"
             disabled={pending}
             onChange={handleFileChange}
@@ -116,22 +136,21 @@ export function ImageUploadField({
             disabled={pending}
             onClick={() => inputRef.current?.click()}
           >
-            <ImagePlus className="size-4" />
-            Choose image
-          </Button>
-          <Button type="submit" size="sm" disabled={pending || !previewUrl}>
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
                 Uploading…
               </>
             ) : (
-              "Upload"
+              <>
+                <ImagePlus className="size-4" />
+                Choose image
+              </>
             )}
           </Button>
           <p className="text-xs text-muted-foreground">JPEG, PNG, or WebP · max 2 MB</p>
         </div>
       </div>
-    </form>
+    </div>
   );
 }

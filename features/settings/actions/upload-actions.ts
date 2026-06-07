@@ -86,6 +86,14 @@ export async function uploadProfileAvatarAction(
   try {
     const { supabase, user } = await requireProfile();
 
+    const setup = await getLogoStorageSetupStatus(supabase);
+    if (!setup.hasAvatarsBucket) {
+      return {
+        error:
+          "Avatar storage is not set up. Run scripts/apply-logo-storage.sql in the Supabase SQL Editor, then try again.",
+      };
+    }
+
     const avatarUrl = await uploadImageToBucket(supabase, {
       bucket: AVATARS_BUCKET,
       path: `${user.id}/avatar`,

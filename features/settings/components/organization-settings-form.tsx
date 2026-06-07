@@ -6,7 +6,8 @@ import {
   updateOrganizationSettings,
   type SettingsActionState,
 } from "@/features/settings/actions/settings-actions";
-import { OrganizationLogoUpload } from "@/features/settings/components/organization-logo-upload";
+import { ImageUploadField } from "@/components/shared/image-upload-field";
+import { uploadOrganizationLogoAction } from "@/features/settings/actions/upload-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,10 +36,13 @@ export function OrganizationSettingsForm({
 
   return (
     <div className="space-y-6">
-      <OrganizationLogoUpload
-        organizationId={organization.id}
-        organizationName={organization.name}
-        currentLogoUrl={logoUrl ?? organization.logo_url}
+      <ImageUploadField
+        label="Company logo"
+        description="Appears in the sidebar for everyone in your workspace (top-left logo area)."
+        currentImageUrl={logoUrl ?? organization.logo_url}
+        fallbackLabel={organization.name.slice(0, 2).toUpperCase()}
+        action={uploadOrganizationLogoAction}
+        imageAlt={`${organization.name} logo`}
       />
 
       <form action={formAction} className="space-y-4">

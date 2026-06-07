@@ -1,5 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { ORGANIZATION_LOGOS_BUCKET } from "@/lib/storage/constants";
+import {
+  AVATARS_BUCKET,
+  ORGANIZATION_LOGOS_BUCKET,
+} from "@/lib/storage/constants";
 import type { Database } from "@/types/database";
 
 type StorageClient = SupabaseClient<Database>;
@@ -7,6 +10,7 @@ type StorageClient = SupabaseClient<Database>;
 export type LogoStorageSetupStatus = {
   hasLogoUrlColumn: boolean;
   hasOrganizationLogosBucket: boolean;
+  hasAvatarsBucket: boolean;
   ready: boolean;
 };
 
@@ -20,18 +24,28 @@ export async function getLogoStorageSetupStatus(
 
   const hasLogoUrlColumn = !columnError?.message?.includes("logo_url");
 
-  const { error: bucketError } = await supabase.storage
+  const { error: orgBucketError } = await supabase.storage
     .from(ORGANIZATION_LOGOS_BUCKET)
     .list("", { limit: 1 });
 
-  const hasOrganizationLogosBucket =
-    !bucketError ||
-    (!bucketError.message.includes("not found") &&
-      !bucketError.message.includes("Bucket not found"));
+  const hasOrganizationLogosBucket = bucketExists(orgBucketError);
+
+  const { error: avatarBucketError } = await supabase.storage
+    .from(AVATARS_BUCKET)
+    .list("", { limit: 1 });
+
+  const hasAvatarsBucket = bucketExists(avatarBucketError);
 
   return {
     hasLogoUrlColumn,
     hasOrganizationLogosBucket,
-    ready: hasLogoUrlColumn && hasOrganizationLogosBucket,
+    hasAvatarsBucket,
+    ready: hasLogoUrlColumn && hasOrganizationLogosBucket && hasAvatarsBucket,
   };
+}
+
+function bucketExists(error: { message: string } | null): boolean {
+  if (!error) return true;
+  const message = error.message.toLowerCase();
+  return !message.includes("not found") && !message.includes("bucket not found");
 }

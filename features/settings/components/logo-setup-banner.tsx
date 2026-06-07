@@ -7,14 +7,18 @@ type Props = {
   projectRef: string;
   hasLogoUrlColumn: boolean;
   hasOrganizationLogosBucket: boolean;
+  hasAvatarsBucket: boolean;
 };
 
 export function LogoSetupBanner({
   projectRef,
   hasLogoUrlColumn,
   hasOrganizationLogosBucket,
+  hasAvatarsBucket,
 }: Props) {
-  if (hasLogoUrlColumn && hasOrganizationLogosBucket) return null;
+  if (hasLogoUrlColumn && hasOrganizationLogosBucket && hasAvatarsBucket) {
+    return null;
+  }
 
   const sqlUrl = `https://supabase.com/dashboard/project/${projectRef}/sql/new`;
 
@@ -26,9 +30,14 @@ export function LogoSetupBanner({
           <p className="font-medium text-foreground">Logo uploads need a one-time database setup</p>
           <p className="text-muted-foreground">
             Your Supabase project is missing{" "}
-            {!hasOrganizationLogosBucket ? "the storage bucket" : null}
-            {!hasOrganizationLogosBucket && !hasLogoUrlColumn ? " and " : null}
-            {!hasLogoUrlColumn ? "the logo_url column" : null}. Run{" "}
+            {[
+              !hasLogoUrlColumn ? "the logo_url column" : null,
+              !hasOrganizationLogosBucket ? "the organization-logos bucket" : null,
+              !hasAvatarsBucket ? "the avatars bucket" : null,
+            ]
+              .filter(Boolean)
+              .join(", ")}
+            . Run{" "}
             <code className="text-xs">scripts/apply-logo-storage.sql</code> in the SQL
             Editor, or run{" "}
             <code className="text-xs">node scripts/setup-logo-storage.mjs</code> locally.

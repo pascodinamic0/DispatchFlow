@@ -67,6 +67,7 @@ export default async function SettingsPage() {
           projectRef={projectRef}
           hasLogoUrlColumn={logoSetup.hasLogoUrlColumn}
           hasOrganizationLogosBucket={logoSetup.hasOrganizationLogosBucket}
+          hasAvatarsBucket={logoSetup.hasAvatarsBucket}
         />
       ) : null}
 
