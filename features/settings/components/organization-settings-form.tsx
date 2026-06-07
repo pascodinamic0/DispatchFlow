@@ -6,6 +6,7 @@ import {
   updateOrganizationSettings,
   type SettingsActionState,
 } from "@/features/settings/actions/settings-actions";
+import { OrganizationLogoUpload } from "@/features/settings/components/organization-logo-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,9 +16,13 @@ const initialState: SettingsActionState = {};
 
 type Props = {
   organization: Organization;
+  logoUrl?: string | null;
 };
 
-export function OrganizationSettingsForm({ organization }: Props) {
+export function OrganizationSettingsForm({
+  organization,
+  logoUrl,
+}: Props) {
   const [state, formAction, pending] = useActionState(
     updateOrganizationSettings,
     initialState,
@@ -29,7 +34,14 @@ export function OrganizationSettingsForm({ organization }: Props) {
   }, [state.error, state.success]);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <div className="space-y-6">
+      <OrganizationLogoUpload
+        organizationId={organization.id}
+        organizationName={organization.name}
+        currentLogoUrl={logoUrl ?? organization.logo_url}
+      />
+
+      <form action={formAction} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="name">Organization name</Label>
         <Input
@@ -48,5 +60,6 @@ export function OrganizationSettingsForm({ organization }: Props) {
         {pending ? "Saving…" : "Save organization"}
       </Button>
     </form>
+    </div>
   );
 }

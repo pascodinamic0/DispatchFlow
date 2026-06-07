@@ -1,8 +1,13 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { DashboardShellLoader } from "@/components/layout/dashboard-shell-loader";
 import { createClient } from "@/lib/supabase/server";
 import { getHeaderNotifications } from "@/services/notifications.service";
-import { getProfileByUserId } from "@/services/profile.service";
+import { resolveOrganizationLogoUrl } from "@/lib/storage/organization-logo";
+import {
+  getOrganizationById,
+  getProfileByUserId,
+} from "@/services/profile.service";
 import type { UserRole } from "@/types";
 
 export default async function DashboardLayout({
@@ -12,7 +17,10 @@ export default async function DashboardLayout({
 }) {
   let userEmail: string | null = null;
   let userName: string | null = null;
+  let userAvatarUrl: string | null = null;
   let userRole: UserRole | null = null;
+  let organizationName: string | null = null;
+  let organizationLogoUrl: string | null = null;
   let notifications: Awaited<
     ReturnType<typeof getHeaderNotifications>
   >["items"] = [];
@@ -41,7 +49,22 @@ export default async function DashboardLayout({
     }
 
     userName = profile.full_name;
+    userAvatarUrl = profile.avatar_url;
     userRole = profile.role;
+
+    const organization = await getOrganizationById(
+      supabase,
+      profile.organization_id,
+    );
+    organizationName = organization?.name ?? null;
+    organizationLogoUrl = organization
+      ? await resolveOrganizationLogoUrl(
+          supabase,
+          profile.organization_id,
+          organization.logo_url,
+        )
+      : null;
+
     const headerNotifications = await getHeaderNotifications(
       supabase,
       user.id,
@@ -50,15 +73,23 @@ export default async function DashboardLayout({
     unreadCount = headerNotifications.unreadCount;
   }
 
+  const cookieStore = await cookies();
+  const initialSidebarOpen =
+    cookieStore.get("sidebar_state")?.value !== "false";
+
   return (
-    <DashboardShell
+    <DashboardShellLoader
       userEmail={userEmail}
       userName={userName}
+      userAvatarUrl={userAvatarUrl}
       userRole={userRole}
+      organizationName={organizationName}
+      organizationLogoUrl={organizationLogoUrl}
       notifications={notifications}
       unreadCount={unreadCount}
+      initialSidebarOpen={initialSidebarOpen}
     >
       {children}
-    </DashboardShell>
+    </DashboardShellLoader>
   );
 }

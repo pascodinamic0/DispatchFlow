@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { DashboardSearch } from "@/components/layout/dashboard-search";
 import { NotificationsBell } from "@/components/layout/notifications-bell";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -34,6 +34,7 @@ import type { NotificationItem } from "@/services/notifications.service";
 type DashboardHeaderProps = {
   userEmail?: string | null;
   userName?: string | null;
+  userAvatarUrl?: string | null;
   notifications?: NotificationItem[];
   unreadCount?: number;
 };
@@ -41,20 +42,12 @@ type DashboardHeaderProps = {
 export function DashboardHeader({
   userEmail,
   userName,
+  userAvatarUrl,
   notifications = [],
   unreadCount = 0,
 }: DashboardHeaderProps) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const initials =
-    userName
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() ||
-    userEmail?.slice(0, 2).toUpperCase() ||
-    "DF";
   const displayName = userName ?? "Team member";
 
   async function handleSignOut() {
@@ -110,11 +103,13 @@ export function DashboardHeader({
               "lg:min-w-[8.5rem] lg:justify-start",
             )}
           >
-            <Avatar className="size-7 shrink-0">
-              <AvatarFallback className="bg-primary/10 text-xs font-medium text-primary">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              userName={userName}
+              userEmail={userEmail}
+              avatarUrl={userAvatarUrl}
+              className="size-7"
+              fallbackClassName="bg-primary/10 text-xs font-medium text-primary"
+            />
             <span className="hidden max-w-[7.5rem] truncate text-sm font-medium lg:inline">
               {displayName}
             </span>

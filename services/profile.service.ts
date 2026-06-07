@@ -84,11 +84,17 @@ export async function getOrganizationById(
 export async function updateOrganization(
   supabase: DbClient,
   organizationId: string,
-  patch: { name: string },
+  patch: { name?: string; logoUrl?: string | null },
 ): Promise<Organization> {
+  const update: Database["public"]["Tables"]["organizations"]["Update"] = {
+    updated_at: new Date().toISOString(),
+  };
+  if (patch.name !== undefined) update.name = patch.name.trim();
+  if (patch.logoUrl !== undefined) update.logo_url = patch.logoUrl;
+
   const { data, error } = await supabase
     .from("organizations")
-    .update({ name: patch.name.trim(), updated_at: new Date().toISOString() })
+    .update(update)
     .eq("id", organizationId)
     .select("*")
     .single();
@@ -104,6 +110,7 @@ export async function updateProfile(
     fullName?: string;
     department?: string | null;
     phone?: string | null;
+    avatarUrl?: string | null;
     role?: UserRole;
     emailNotificationsEnabled?: boolean;
     pushNotificationsEnabled?: boolean;
@@ -115,6 +122,7 @@ export async function updateProfile(
   if (patch.fullName !== undefined) update.full_name = patch.fullName.trim();
   if (patch.department !== undefined) update.department = patch.department;
   if (patch.phone !== undefined) update.phone = patch.phone;
+  if (patch.avatarUrl !== undefined) update.avatar_url = patch.avatarUrl;
   if (patch.role !== undefined) update.role = patch.role;
   if (patch.emailNotificationsEnabled !== undefined) {
     update.email_notifications_enabled = patch.emailNotificationsEnabled;

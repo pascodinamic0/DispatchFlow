@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
-import { Logo } from "@/components/brand/logo";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { OrgLogo } from "@/components/brand/org-logo";
+import { SidebarLayoutControls } from "@/components/layout/sidebar-layout-controls";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import {
   Sidebar,
   SidebarContent,
@@ -31,39 +32,66 @@ import type { UserRole } from "@/types";
 
 type AppSidebarProps = {
   userName?: string | null;
+  userEmail?: string | null;
+  userAvatarUrl?: string | null;
   userRole?: UserRole | null;
+  organizationName?: string | null;
+  organizationLogoUrl?: string | null;
 };
 
-export function AppSidebar({ userName, userRole }: AppSidebarProps) {
+export function AppSidebar({
+  userName,
+  userEmail,
+  userAvatarUrl,
+  userRole,
+  organizationName,
+  organizationLogoUrl,
+}: AppSidebarProps) {
   const pathname = usePathname();
   const { state, isMobile } = useSidebar();
-  const initials =
-    userName
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() || "DF";
+  const isCollapsed = state === "collapsed";
 
   return (
     <Sidebar
       collapsible="icon"
       className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground"
     >
-      <SidebarHeader className="flex items-center justify-center border-b border-sidebar-border px-3 py-3 group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:py-2">
+      <SidebarHeader
+        className={cn(
+          "gap-0 border-b border-sidebar-border p-0",
+          isCollapsed
+            ? "flex items-center justify-center px-1.5 py-2"
+            : "flex-row items-center gap-2 px-3 py-2.5",
+        )}
+      >
         <Tooltip>
           <TooltipTrigger
             render={
               <Link
                 href="/dashboard"
                 aria-label="Dashboard"
-                className="flex w-full items-center justify-center rounded-lg outline-none ring-sidebar-ring transition-colors hover:bg-sidebar-accent focus-visible:ring-2 group-data-[collapsible=icon]:size-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:p-0"
+                className={cn(
+                  "flex shrink-0 items-center justify-center rounded-lg outline-none ring-sidebar-ring transition-colors hover:bg-sidebar-accent focus-visible:ring-2",
+                  isCollapsed ? "size-10" : "min-h-10 min-w-0 flex-1",
+                )}
               />
             }
           >
-            <div className="flex h-10 w-full items-center justify-center rounded-lg bg-white/95 px-3 py-2 shadow-sm group-data-[collapsible=icon]:size-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:p-1.5">
-              <Logo
-                className="h-7 w-auto max-w-[140px] object-contain group-data-[collapsible=icon]:size-6 group-data-[collapsible=icon]:max-w-6"
+            <div
+              className={cn(
+                "flex items-center justify-center rounded-lg bg-white/95 shadow-sm",
+                isCollapsed ? "size-10 p-1.5" : "h-10 w-full px-3 py-2",
+              )}
+            >
+              <OrgLogo
+                logoUrl={organizationLogoUrl}
+                organizationName={organizationName}
+                className={cn(
+                  "object-contain",
+                  isCollapsed
+                    ? "size-6 max-w-6"
+                    : "h-7 w-auto max-w-[min(180px,100%)]",
+                )}
                 priority
               />
             </div>
@@ -71,12 +99,13 @@ export function AppSidebar({ userName, userRole }: AppSidebarProps) {
           <TooltipContent
             side="right"
             align="center"
-            hidden={state !== "collapsed" || isMobile}
+            hidden={!isCollapsed || isMobile}
             className="px-3 py-2 text-sm font-medium"
           >
-            Dashboard
+            {organizationName ?? "Dashboard"}
           </TooltipContent>
         </Tooltip>
+        <SidebarLayoutControls />
       </SidebarHeader>
       <SidebarContent className="group-data-[collapsible=icon]:items-center">
         <SidebarGroup className="w-full px-2 group-data-[collapsible=icon]:px-1">
@@ -124,11 +153,13 @@ export function AppSidebar({ userName, userRole }: AppSidebarProps) {
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border p-3 group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-1 group-data-[collapsible=icon]:py-2">
         <div className="flex w-full items-center gap-3 rounded-lg bg-sidebar-accent/50 p-2 group-data-[collapsible=icon]:w-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
-          <Avatar className="size-9 shrink-0 group-data-[collapsible=icon]:size-10">
-            <AvatarFallback className="bg-sidebar-primary text-xs font-semibold text-sidebar-primary-foreground group-data-[collapsible=icon]:text-sm">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            userName={userName}
+            userEmail={userEmail}
+            avatarUrl={userAvatarUrl}
+            className="size-9 group-data-[collapsible=icon]:size-10"
+            fallbackClassName="bg-sidebar-primary text-xs font-semibold text-sidebar-primary-foreground group-data-[collapsible=icon]:text-sm"
+          />
           <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
             <p className="truncate text-sm font-medium leading-tight">
               {userName ?? "Team member"}

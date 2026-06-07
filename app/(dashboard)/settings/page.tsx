@@ -1,4 +1,7 @@
+import { LogoSetupBanner } from "@/features/settings/components/logo-setup-banner";
 import { InviteTeamPanel } from "@/features/settings/components/invite-team-panel";
+import { resolveOrganizationLogoUrl } from "@/lib/storage/organization-logo";
+import { getLogoStorageSetupStatus } from "@/lib/storage/setup-status";
 import { NotificationPreferencesForm } from "@/features/settings/components/notification-preferences-form";
 import { OrganizationSettingsForm } from "@/features/settings/components/organization-settings-form";
 import { ProfileSettingsForm } from "@/features/settings/components/profile-settings-form";
@@ -37,6 +40,20 @@ export default async function SettingsPage() {
     canManageOrganization(profile.role) && organization != null;
   const showTeam = canManageTeamRoles(profile.role);
   const vapidPublicKey = process.env.VAPID_PUBLIC_KEY ?? null;
+  const logoSetup = showOrgSettings
+    ? await getLogoStorageSetupStatus(supabase)
+    : null;
+  const organizationLogoUrl =
+    showOrgSettings && organization
+      ? await resolveOrganizationLogoUrl(
+          supabase,
+          profile.organization_id,
+          organization.logo_url,
+        )
+      : null;
+  const projectRef =
+    process.env.NEXT_PUBLIC_SUPABASE_URL?.replace("https://", "").split(".")[0] ??
+    "";
 
   return (
     <div className="space-y-6">
@@ -44,6 +61,14 @@ export default async function SettingsPage() {
         title="Settings"
         description="Organization profile, notifications, invites, and team access."
       />
+
+      {showOrgSettings && logoSetup && !logoSetup.ready ? (
+        <LogoSetupBanner
+          projectRef={projectRef}
+          hasLogoUrlColumn={logoSetup.hasLogoUrlColumn}
+          hasOrganizationLogosBucket={logoSetup.hasOrganizationLogosBucket}
+        />
+      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="df-card border-border/80 shadow-[var(--shadow-card)]">
@@ -81,7 +106,10 @@ export default async function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <OrganizationSettingsForm organization={organization} />
+              <OrganizationSettingsForm
+                organization={organization}
+                logoUrl={organizationLogoUrl}
+              />
             </CardContent>
           </Card>
         ) : null}

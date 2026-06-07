@@ -6,6 +6,8 @@ import {
   updateProfileSettings,
   type SettingsActionState,
 } from "@/features/settings/actions/settings-actions";
+import { ImageUploadField } from "@/components/shared/image-upload-field";
+import { uploadProfileAvatarAction } from "@/features/settings/actions/upload-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,8 +31,26 @@ export function ProfileSettingsForm({ profile, userEmail }: Props) {
     if (state.success) toast.success(state.success);
   }, [state.error, state.success]);
 
+  const initials = profile.full_name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
-    <form action={formAction} className="space-y-4">
+    <div className="space-y-6">
+      <ImageUploadField
+        label="Profile photo"
+        description="Appears on your account avatar in the top header and sidebar footer."
+        currentImageUrl={profile.avatar_url}
+        fallbackLabel={initials}
+        action={uploadProfileAvatarAction}
+        shape="circle"
+        imageAlt={profile.full_name}
+      />
+
+      <form action={formAction} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="fullName">Full name</Label>
         <Input
@@ -71,5 +91,6 @@ export function ProfileSettingsForm({ profile, userEmail }: Props) {
         {pending ? "Saving…" : "Save profile"}
       </Button>
     </form>
+    </div>
   );
 }
