@@ -39,15 +39,17 @@ export function AuthShell({ children, title, description }: AuthShellProps) {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center bg-[var(--brand-surface)] p-6 sm:p-10">
+      <div className="flex flex-col items-center justify-center bg-[var(--brand-surface)] p-6 text-slate-900 sm:p-10">
         <div className="mb-8 w-full max-w-md lg:hidden">
           <Link href="/" className="inline-block">
             <Logo className="max-h-10" priority />
           </Link>
         </div>
         <div className="w-full max-w-md space-y-2 text-center lg:text-left">
-          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            {title}
+          </h1>
+          <p className="text-sm text-slate-500">{description}</p>
         </div>
         <div className="mt-6 w-full max-w-md">{children}</div>
       </div>
