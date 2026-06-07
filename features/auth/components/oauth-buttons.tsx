@@ -6,6 +6,7 @@ import { signInWithOAuth } from "@/services/auth.service";
 import { getErrorMessage } from "@/lib/errors";
 import { hasSupabaseEnv } from "@/lib/env";
 import { Button } from "@/components/ui/button";
+import { GoogleIcon } from "@/features/auth/components/google-icon";
 
 type Props = {
   mode?: "login" | "signup";
@@ -48,13 +49,11 @@ export function OAuthButtons({ mode = "login" }: Props) {
         disabled={!configured || pending}
         onClick={onGoogle}
       >
+        <GoogleIcon className="size-4" />
         {pending
           ? "Redirecting…"
           : `${mode === "signup" ? "Sign up" : "Sign in"} with Google`}
       </Button>
-      <p className="text-center text-xs text-muted-foreground">
-        Enable Google under Supabase → Authentication → Providers.
-      </p>
     </div>
   );
 }
