@@ -12,6 +12,10 @@ export const brand = {
     width: 280,
     height: 56,
   },
+  icon: {
+    src: "/dispatchflow-icon.svg",
+    alt: "DispatchFlow",
+  },
   marketing: {
     heroDashboard: {
       src: "/marketing-hero-dashboard.png",
