@@ -4,9 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
 import { brand } from "@/lib/brand";
-import { cn } from "@/lib/utils";
 
 export function LandingCta() {
   const ref = useRef<HTMLElement>(null);
@@ -17,7 +15,7 @@ export function LandingCta() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-[var(--brand-navy)] py-20 text-white sm:py-28"
+      className="relative overflow-x-clip bg-[var(--brand-navy)] py-14 text-white sm:py-28"
       aria-labelledby="landing-cta-heading"
     >
       <div
@@ -34,41 +32,29 @@ export function LandingCta() {
         animate={show ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.45 }}
       >
-        <p className="text-sm font-semibold uppercase tracking-wider text-lime-400">
+        <p className="text-[13px] font-semibold uppercase tracking-wider text-lime-400">
           {brand.tagline}
         </p>
         <h2
           id="landing-cta-heading"
-          className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl"
+          className="mt-3 text-[1.75rem] font-bold leading-tight tracking-tight sm:text-4xl"
         >
           Ready to run your operations?
         </h2>
-        <p className="mt-4 text-lg text-slate-300">
+        <p className="mt-4 text-[17px] leading-relaxed text-slate-300 sm:text-lg">
           Create your workspace, invite your team, and replace scattered
           spreadsheets with one platform your whole organization trusts.
         </p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/signup"
-            className={cn(
-              buttonVariants({ size: "lg" }),
-              "cursor-pointer gap-2 bg-lime-400 text-slate-950 shadow-lg shadow-lime-400/25 hover:bg-lime-300 focus-visible:ring-lime-400",
-            )}
-          >
+        <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center">
+          <Link href="/signup" className="df-cta-primary">
             Create free workspace
-            <ArrowRight className="size-4" aria-hidden />
+            <ArrowRight className="size-5" aria-hidden />
           </Link>
-          <Link
-            href="/contact"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "cursor-pointer border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white",
-            )}
-          >
+          <Link href="/contact" className="df-cta-secondary">
             Talk to us
           </Link>
         </div>
-        <p className="mt-8 text-xs text-slate-500">
+        <p className="mt-8 text-xs leading-relaxed text-slate-500">
           By signing up you agree to our{" "}
           <Link
             href="/terms"

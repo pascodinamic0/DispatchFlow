@@ -16,7 +16,6 @@ import {
   Package,
   Truck,
 } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
 import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
@@ -27,9 +26,9 @@ const highlights = [
 ] as const;
 
 const kpi = [
-  { label: "In transit", value: "12", delta: "+3 today" },
-  { label: "Open requests", value: "28", delta: "4 urgent" },
-  { label: "Low stock", value: "6", delta: "SKUs" },
+  { label: "In transit", short: "Transit", value: "12", delta: "+3 today" },
+  { label: "Open requests", short: "Requests", value: "28", delta: "4 urgent" },
+  { label: "Low stock", short: "Low stock", value: "6", delta: "SKUs" },
 ] as const;
 
 const dispatches = [
@@ -92,11 +91,11 @@ export function LandingHero() {
   return (
     <section
       ref={heroRef}
-      className="relative overflow-hidden bg-[var(--brand-navy)] text-white"
+      className="relative overflow-x-clip bg-[var(--brand-navy)] text-white"
       aria-labelledby="landing-hero-heading"
     >
       <motion.div
-        className="pointer-events-none absolute -right-24 -top-24 size-[420px] rounded-full bg-lime-400/10 blur-3xl"
+        className="pointer-events-none absolute -right-24 -top-24 size-[min(420px,90vw)] rounded-full bg-lime-400/10 blur-3xl"
         style={{ y: yGlow }}
         aria-hidden
       />
@@ -110,33 +109,33 @@ export function LandingHero() {
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
-          <div className="space-y-8">
+      <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-20 lg:py-24">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+          <div className="space-y-7 sm:space-y-8">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={show || reduceMotion ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 rounded-full border border-lime-400/25 bg-lime-400/10 px-3 py-1.5 text-xs font-medium text-lime-200"
+              className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-lime-400/25 bg-lime-400/10 px-3.5 py-1.5 text-[13px] font-semibold text-lime-200"
             >
-              <span className="relative flex size-2" aria-hidden>
+              <span className="relative flex size-2 shrink-0" aria-hidden>
                 {!reduceMotion && (
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-lime-400 opacity-60" />
                 )}
                 <span className="relative inline-flex size-2 rounded-full bg-lime-400" />
               </span>
-              Live ops preview
+              <span>Live ops preview</span>
               {liveAt ? (
-                <span className="font-mono text-[10px] text-lime-300/80">
+                <span className="font-mono text-[11px] font-medium text-lime-300/80">
                   · {liveAt}
                 </span>
               ) : null}
             </motion.div>
 
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               <motion.h1
                 id="landing-hero-heading"
-                className="text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.35rem]"
+                className="text-[2.75rem] font-bold leading-[1.02] tracking-tight sm:text-5xl lg:text-[3.35rem]"
                 initial={reduceMotion ? false : { opacity: 0, y: 18 }}
                 animate={show || reduceMotion ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
@@ -148,7 +147,7 @@ export function LandingHero() {
                 </span>
               </motion.h1>
               <motion.p
-                className="max-w-lg text-lg leading-relaxed text-slate-300"
+                className="max-w-lg text-[17px] leading-relaxed text-slate-300 sm:text-lg"
                 initial={reduceMotion ? false : { opacity: 0 }}
                 animate={show || reduceMotion ? { opacity: 1 } : {}}
                 transition={{ duration: 0.45, delay: 0.2 }}
@@ -160,7 +159,7 @@ export function LandingHero() {
             </div>
 
             <motion.ul
-              className="space-y-2.5"
+              className="space-y-3"
               initial={reduceMotion ? false : { opacity: 0, y: 8 }}
               animate={show || reduceMotion ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.28 }}
@@ -168,7 +167,7 @@ export function LandingHero() {
               {highlights.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-2.5 text-sm text-slate-300"
+                  className="flex items-start gap-3 text-[15px] leading-snug text-slate-300"
                 >
                   <span
                     className="mt-1.5 size-1.5 shrink-0 rounded-full bg-lime-400"
@@ -185,45 +184,33 @@ export function LandingHero() {
               animate={show || reduceMotion ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.36 }}
             >
-              <Link
-                href="/signup"
-                className={cn(
-                  buttonVariants({ size: "lg" }),
-                  "cursor-pointer gap-2 bg-lime-400 text-slate-950 shadow-lg shadow-lime-400/25 hover:bg-lime-300 focus-visible:ring-lime-400",
-                )}
-              >
+              <Link href="/signup" className="df-cta-primary">
                 Start your workspace
-                <ArrowRight className="size-4" aria-hidden />
+                <ArrowRight className="size-5" aria-hidden />
               </Link>
-              <Link
-                href="#product"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "cursor-pointer border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white",
-                )}
-              >
+              <Link href="#product" className="df-cta-secondary">
                 See the app shell
               </Link>
             </motion.div>
 
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-sm text-slate-400">
+            <ul className="grid grid-cols-3 gap-2 border-t border-white/10 pt-6 text-[12px] text-slate-400 sm:flex sm:flex-wrap sm:gap-x-6 sm:gap-y-2 sm:text-sm">
               <li className="flex items-center gap-2">
-                <ClipboardList className="size-4 text-lime-400" aria-hidden />
-                Procurement
+                <ClipboardList className="size-4 shrink-0 text-lime-400" aria-hidden />
+                <span className="leading-tight">Procurement</span>
               </li>
               <li className="flex items-center gap-2">
-                <Truck className="size-4 text-lime-400" aria-hidden />
-                Dispatches
+                <Truck className="size-4 shrink-0 text-lime-400" aria-hidden />
+                <span className="leading-tight">Dispatches</span>
               </li>
               <li className="flex items-center gap-2">
-                <MapPin className="size-4 text-lime-400" aria-hidden />
-                Branches
+                <MapPin className="size-4 shrink-0 text-lime-400" aria-hidden />
+                <span className="leading-tight">Branches</span>
               </li>
             </ul>
           </div>
 
           <motion.div
-            className="relative mx-auto w-full max-w-xl lg:max-w-none"
+            className="relative mx-auto w-full min-w-0 max-w-md lg:max-w-none"
             initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.97 }}
             animate={
               show || reduceMotion ? { opacity: 1, y: 0, scale: 1 } : {}
@@ -235,10 +222,158 @@ export function LandingHero() {
             }}
           >
             <div
-              className="absolute -inset-3 rounded-3xl bg-lime-400/15 blur-2xl"
+              className="absolute -inset-2 rounded-[2rem] bg-lime-400/15 blur-2xl sm:-inset-3 sm:rounded-3xl"
               aria-hidden
             />
-            <div className="relative z-10 overflow-hidden rounded-2xl border border-white/12 bg-[#0f172a]/90 shadow-2xl shadow-black/40 ring-1 ring-lime-400/20 backdrop-blur-sm">
+
+            {/* —— Mobile: iPhone-native ops card —— */}
+            <div className="relative z-10 overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#0a1220] shadow-2xl shadow-black/50 ring-1 ring-lime-400/20 backdrop-blur-md sm:hidden">
+              {/* Status bar + Dynamic Island */}
+              <div className="relative grid grid-cols-[1fr_auto_1fr] items-center px-4 pb-1 pt-3">
+                <span className="justify-self-start font-mono text-[12px] font-semibold tabular-nums text-white">
+                  9:41
+                </span>
+                <div
+                  className="h-[1.55rem] w-[6.5rem] rounded-full bg-black ring-1 ring-white/10"
+                  aria-hidden
+                />
+                <div className="flex items-center justify-end gap-1" aria-hidden>
+                  <span className="h-2 w-3.5 rounded-sm bg-white/80" />
+                  <span className="h-2.5 w-[18px] rounded-[3px] border border-white/80 p-px">
+                    <span className="block h-full w-[70%] rounded-[1px] bg-lime-400" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between px-4 pb-3 pt-2">
+                <div>
+                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                    {brand.name}
+                  </p>
+                  <p className="text-sm font-semibold text-white">Ops today</p>
+                </div>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-lime-400/10 px-2.5 py-1 text-[10px] font-semibold text-lime-300 ring-1 ring-lime-400/25">
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full bg-lime-400",
+                      !reduceMotion && "animate-pulse",
+                    )}
+                    aria-hidden
+                  />
+                  LIVE
+                </span>
+              </div>
+
+              <div className="space-y-3 px-3 pb-4">
+                {/* Stacked KPI rows — no 3-col crush */}
+                <div className="space-y-2">
+                  {kpi.map((s, i) => (
+                    <motion.div
+                      key={s.label}
+                      className="flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.05] px-3.5 py-3"
+                      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                      animate={show || reduceMotion ? { opacity: 1, y: 0 } : {}}
+                      transition={{ delay: 0.4 + i * 0.06, duration: 0.35 }}
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-[12px] font-medium text-slate-400">
+                          {s.label}
+                        </p>
+                        <p className="text-[11px] font-medium text-lime-400/90">
+                          {s.delta}
+                        </p>
+                      </div>
+                      <p className="shrink-0 text-2xl font-bold tabular-nums tracking-tight text-white">
+                        {s.value}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div>
+                  <div className="mb-2 flex items-center justify-between px-0.5">
+                    <p className="text-xs font-semibold text-white">
+                      Active pipeline
+                    </p>
+                    <Package className="size-3.5 text-slate-500" aria-hidden />
+                  </div>
+                  <ul className="space-y-2">
+                    {dispatches.map((row, i) => (
+                      <motion.li
+                        key={row.code}
+                        className="flex min-w-0 items-center justify-between gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2.5"
+                        initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+                        animate={
+                          show || reduceMotion ? { opacity: 1, x: 0 } : {}
+                        }
+                        transition={{ delay: 0.55 + i * 0.08, duration: 0.35 }}
+                      >
+                        <div className="min-w-0">
+                          <p className="font-mono text-[12px] font-medium text-white">
+                            {row.code}
+                          </p>
+                          <p className="truncate text-[11px] text-slate-400">
+                            {row.route}
+                          </p>
+                        </div>
+                        <span
+                          className={cn(
+                            "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1",
+                            toneClass[row.tone],
+                          )}
+                        >
+                          {row.status}
+                        </span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Compact sparkline — not a full desktop chart */}
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-3">
+                  <p className="mb-2 text-[11px] font-semibold text-slate-300">
+                    Throughput · 6 mo
+                  </p>
+                  <div
+                    className="flex h-12 items-end gap-1.5"
+                    role="img"
+                    aria-label="Monthly dispatch throughput rising through October"
+                  >
+                    {bars.map((h, i) => (
+                      <motion.div
+                        key={months[i]}
+                        className={cn(
+                          "min-w-0 flex-1 rounded-t",
+                          h === 88
+                            ? "bg-lime-400 shadow-[0_0_10px_rgba(163,230,53,0.4)]"
+                            : "bg-slate-600/70",
+                        )}
+                        style={{ height: `${h}%` }}
+                        initial={
+                          reduceMotion ? false : { scaleY: 0, originY: 1 }
+                        }
+                        animate={
+                          show || reduceMotion ? { scaleY: 1 } : {}
+                        }
+                        transition={{
+                          delay: 0.7 + i * 0.04,
+                          duration: 0.4,
+                          ease: "easeOut",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Home indicator */}
+              <div className="flex justify-center pb-2 pt-1" aria-hidden>
+                <div className="h-1 w-28 rounded-full bg-white/25" />
+              </div>
+            </div>
+
+            {/* —— Desktop / tablet: ops console —— */}
+            <div className="relative z-10 hidden overflow-hidden rounded-2xl border border-white/12 bg-[#0f172a]/90 shadow-2xl shadow-black/40 ring-1 ring-lime-400/20 backdrop-blur-sm sm:block">
               <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-4 py-3">
                 <div className="flex items-center gap-1.5" aria-hidden>
                   <span className="size-2.5 rounded-full bg-red-400/90" />
@@ -265,18 +400,18 @@ export function LandingHero() {
                   {kpi.map((s, i) => (
                     <motion.div
                       key={s.label}
-                      className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
+                      className="min-w-0 rounded-xl border border-white/10 bg-white/[0.04] p-3"
                       initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                       animate={show || reduceMotion ? { opacity: 1, y: 0 } : {}}
                       transition={{ delay: 0.45 + i * 0.07, duration: 0.35 }}
                     >
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
-                        {s.label}
+                      <p className="truncate font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                        {s.short}
                       </p>
                       <p className="mt-1 text-xl font-semibold tabular-nums tracking-tight text-white sm:text-2xl">
                         {s.value}
                       </p>
-                      <p className="mt-0.5 text-[11px] font-medium text-lime-400/90">
+                      <p className="mt-0.5 truncate text-[11px] font-medium text-lime-400/90">
                         {s.delta}
                       </p>
                     </motion.div>
@@ -334,7 +469,7 @@ export function LandingHero() {
                     {bars.map((h, i) => (
                       <div
                         key={months[i]}
-                        className="flex flex-1 flex-col items-center gap-1"
+                        className="flex min-w-0 flex-1 flex-col items-center gap-1"
                       >
                         <motion.div
                           className={cn(

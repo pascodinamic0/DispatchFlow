@@ -132,11 +132,16 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
   html {
     @apply font-sans scroll-smooth;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    overflow-x: clip;
+    touch-action: manipulation;
   }
 }
 
@@ -192,6 +197,34 @@ body {
   .df-prose strong {
     @apply font-semibold text-foreground;
   }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .pl-safe {
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+  .pr-safe {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  .px-safe {
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+
+  /* Boutik-bar marketing CTAs: 56px touch */
+  .df-cta-primary {
+    @apply inline-flex min-h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-lime-400 px-6 text-base font-bold text-slate-950 shadow-[0_14px_30px_-12px_rgba(163,230,53,0.55)] transition-colors duration-200 hover:bg-lime-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--brand-navy)] sm:w-auto;
+  }
+  .df-cta-secondary {
+    @apply inline-flex min-h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/25 bg-transparent px-6 text-base font-bold text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:w-auto;
+  }
+  .df-cta-nav {
+    @apply min-h-11 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-bold transition-colors duration-200;
+  }
+
 }
 
 @keyframes df-fade-in {

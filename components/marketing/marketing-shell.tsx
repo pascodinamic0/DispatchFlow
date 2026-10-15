@@ -12,9 +12,9 @@ export function MarketingShell({
   variant = "page",
 }: MarketingShellProps) {
   return (
-    <div className="flex min-h-svh flex-col bg-background">
+    <div className="flex min-h-svh flex-col overflow-x-clip bg-background">
       <MarketingHeader variant={variant} />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-x-clip">{children}</main>
       <MarketingFooter />
     </div>
   );

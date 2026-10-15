@@ -37,7 +37,7 @@ export function MarketingMobileNav({ items, className }: MarketingMobileNavProps
       <SheetTrigger
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "text-slate-200 hover:bg-white/10 hover:text-white",
+          "min-h-11 min-w-11 text-slate-200 hover:bg-white/10 hover:text-white",
           className,
         )}
         aria-label="Open menu"
@@ -46,7 +46,7 @@ export function MarketingMobileNav({ items, className }: MarketingMobileNavProps
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-full border-border bg-background sm:max-w-sm"
+        className="w-full border-border bg-background pb-safe sm:max-w-sm"
       >
         <SheetHeader className="border-b border-border pb-4 text-left">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
@@ -60,7 +60,7 @@ export function MarketingMobileNav({ items, className }: MarketingMobileNavProps
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-base font-medium text-foreground hover:bg-muted"
+              className="min-h-12 cursor-pointer rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted"
             >
               {item.label}
             </Link>
@@ -70,14 +70,17 @@ export function MarketingMobileNav({ items, className }: MarketingMobileNavProps
           <Link
             href="/login"
             onClick={() => setOpen(false)}
-            className={cn(buttonVariants({ variant: "outline" }), "w-full")}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "min-h-12 w-full cursor-pointer text-base font-semibold",
+            )}
           >
             Sign in
           </Link>
           <Link
             href="/signup"
             onClick={() => setOpen(false)}
-            className={cn(buttonVariants({ variant: "default" }), "w-full")}
+            className="df-cta-primary"
           >
             Get started
           </Link>
