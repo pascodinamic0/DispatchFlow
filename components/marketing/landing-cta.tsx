@@ -50,17 +50,14 @@ export function LandingCta() {
             Create free workspace
             <ArrowRight className="size-5" aria-hidden />
           </Link>
-          {/* Secondary is button on sm+; quiet text on phone so CTAs don't fight */}
-          <Link
-            href="/contact"
-            className="df-cta-secondary hidden sm:inline-flex"
-          >
-            Talk to us
-          </Link>
+          {/* Quiet text on phone; full secondary button from sm+ — avoid df-cta + hidden clash */}
           <Link
             href="/contact"
             className="inline-flex min-h-11 items-center justify-center text-[15px] font-semibold text-slate-300 underline-offset-4 active:text-white sm:hidden"
           >
+            Talk to us
+          </Link>
+          <Link href="/contact" className="df-cta-secondary max-sm:!hidden">
             Talk to us
           </Link>
         </div>
