@@ -12,25 +12,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { marketing } from "@/lib/marketing";
 import { cn } from "@/lib/utils";
 
-type NavItem = { label: string; href: string };
+/**
+ * Slim page-sheet only — no blog/legal link farm (Boutik / iOS lander rule).
+ * Landing variant has no hamburger at all; this is for /about, /blog, etc.
+ */
+const sheetLinks = [
+  { label: "Product", href: "/#product" },
+  { label: "Proof", href: "/#proof" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+] as const;
 
 type MarketingMobileNavProps = {
-  items: readonly NavItem[];
   className?: string;
 };
 
-export function MarketingMobileNav({ items, className }: MarketingMobileNavProps) {
+export function MarketingMobileNav({ className }: MarketingMobileNavProps) {
   const [open, setOpen] = useState(false);
-
-  const allItems: NavItem[] = [
-    ...items,
-    { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
-    ...marketing.footer.legal,
-  ];
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -46,7 +46,7 @@ export function MarketingMobileNav({ items, className }: MarketingMobileNavProps
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-full border-border bg-background pb-safe sm:max-w-sm"
+        className="w-full border-border bg-background pt-safe pb-safe sm:max-w-sm"
       >
         <SheetHeader className="border-b border-border pb-4 text-left">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
@@ -55,12 +55,12 @@ export function MarketingMobileNav({ items, className }: MarketingMobileNavProps
           </Link>
         </SheetHeader>
         <nav className="mt-6 flex flex-col gap-1" aria-label="Mobile">
-          {allItems.map((item) => (
+          {sheetLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="min-h-12 cursor-pointer rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted"
+              className="flex min-h-12 cursor-pointer items-center rounded-xl px-3 text-base font-medium text-foreground active:bg-muted"
             >
               {item.label}
             </Link>

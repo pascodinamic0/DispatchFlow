@@ -135,12 +135,20 @@ export function LandingAppTease() {
               className="absolute -inset-2 rounded-3xl bg-lime-400/10 blur-2xl sm:-inset-3"
               aria-hidden
             />
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] ring-1 ring-black/5">
-              <div className="flex items-center gap-2 border-b border-border bg-[var(--brand-navy)] px-3 py-2.5 sm:px-4">
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-[var(--shadow-card)] ring-1 ring-black/5 sm:rounded-2xl">
+              {/* Mobile: native app chrome — no fake macOS traffic lights */}
+              <div className="flex items-center justify-between border-b border-border bg-[var(--brand-navy)] px-4 py-3 sm:hidden">
+                <p className="text-[13px] font-semibold text-white">{current.label}</p>
+                <span className="rounded-full bg-lime-400/15 px-2.5 py-1 text-[12px] font-semibold text-lime-300 ring-1 ring-lime-400/25">
+                  Live
+                </span>
+              </div>
+              {/* Desktop / tablet: window chrome OK */}
+              <div className="hidden items-center gap-2 border-b border-border bg-[var(--brand-navy)] px-4 py-2.5 sm:flex">
                 <span className="size-2 rounded-full bg-red-400/90" aria-hidden />
                 <span className="size-2 rounded-full bg-amber-400/90" aria-hidden />
                 <span className="size-2 rounded-full bg-lime-400/90" aria-hidden />
-                <span className="ml-2 truncate font-mono text-[11px] text-slate-400">
+                <span className="ml-2 truncate font-mono text-xs text-slate-400">
                   {brand.name} / {current.fullLabel}
                 </span>
               </div>

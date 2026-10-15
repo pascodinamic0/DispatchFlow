@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { BarChart3, Shield, Smartphone, Zap } from "lucide-react";
 
@@ -85,7 +84,7 @@ export function LandingProof() {
           {proofPoints.map((item, i) => (
             <motion.div
               key={item.label}
-              className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors duration-200 hover:border-lime-400/30 hover:bg-white/[0.06] sm:p-6"
+              className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors duration-200 active:border-lime-400/30 active:bg-white/[0.06] sm:p-6 sm:hover:border-lime-400/30 sm:hover:bg-white/[0.06]"
               initial={reduceMotion ? false : { opacity: 0, y: 16, scale: 0.96 }}
               animate={show ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{
@@ -106,7 +105,7 @@ export function LandingProof() {
           ))}
         </div>
 
-        <div className="mt-12 sm:mt-16">
+        <div className="mt-12 hidden sm:mt-16 sm:block">
           <h3 className="text-center text-base font-semibold sm:text-lg">
             Typical deployments
           </h3>
@@ -114,7 +113,7 @@ export function LandingProof() {
             {scenarios.map((s, i) => (
               <motion.div
                 key={s.title}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors duration-200 hover:border-white/20"
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors duration-200 active:border-white/20 sm:hover:border-white/20"
                 initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                 animate={show ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 + i * 0.08, duration: 0.35 }}
@@ -128,16 +127,6 @@ export function LandingProof() {
           </div>
         </div>
 
-        <p className="mt-10 text-center text-sm text-slate-400 sm:mt-12">
-          Want the full playbook?{" "}
-          <Link
-            href="/blog"
-            className="cursor-pointer font-medium text-lime-300 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-400"
-          >
-            Read the DispatchFlow blog
-          </Link>
-          .
-        </p>
       </div>
     </section>
   );

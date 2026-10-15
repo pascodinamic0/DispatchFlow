@@ -30,3 +30,6 @@ dispatchflow/
 
 # cursor
 .cursor/
+
+# Local mobile audit screenshots
+qa/

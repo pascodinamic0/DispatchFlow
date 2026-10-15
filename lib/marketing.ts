@@ -15,7 +15,6 @@ export const marketing = {
   nav: [
     { label: "Product", href: "/#product" },
     { label: "Proof", href: "/#proof" },
-    { label: "Blog", href: "/blog" },
   ] as const,
   footer: {
     product: [

@@ -126,7 +126,7 @@ export function LandingHero() {
               </span>
               <span>Live ops preview</span>
               {liveAt ? (
-                <span className="font-mono text-[11px] font-medium text-lime-300/80">
+                <span className="font-mono text-[12px] font-medium text-lime-300/80">
                   · {liveAt}
                 </span>
               ) : null}
@@ -247,12 +247,12 @@ export function LandingHero() {
 
               <div className="flex items-center justify-between px-4 pb-3 pt-2">
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                  <p className="text-[12px] font-medium uppercase tracking-wider text-slate-500">
                     {brand.name}
                   </p>
                   <p className="text-sm font-semibold text-white">Ops today</p>
                 </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-lime-400/10 px-2.5 py-1 text-[10px] font-semibold text-lime-300 ring-1 ring-lime-400/25">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-lime-400/10 px-2.5 py-1 text-[12px] font-semibold text-lime-300 ring-1 ring-lime-400/25">
                   <span
                     className={cn(
                       "size-1.5 rounded-full bg-lime-400",
@@ -276,10 +276,10 @@ export function LandingHero() {
                       transition={{ delay: 0.4 + i * 0.06, duration: 0.35 }}
                     >
                       <div className="min-w-0">
-                        <p className="truncate text-[12px] font-medium text-slate-400">
+                        <p className="truncate text-[13px] font-medium text-slate-400">
                           {s.label}
                         </p>
-                        <p className="text-[11px] font-medium text-lime-400/90">
+                        <p className="text-[12px] font-medium text-lime-400/90">
                           {s.delta}
                         </p>
                       </div>
@@ -312,13 +312,13 @@ export function LandingHero() {
                           <p className="font-mono text-[12px] font-medium text-white">
                             {row.code}
                           </p>
-                          <p className="truncate text-[11px] text-slate-400">
+                          <p className="truncate text-[12px] text-slate-400">
                             {row.route}
                           </p>
                         </div>
                         <span
                           className={cn(
-                            "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1",
+                            "shrink-0 rounded-full px-2.5 py-1 text-[12px] font-semibold ring-1",
                             toneClass[row.tone],
                           )}
                         >
@@ -331,7 +331,7 @@ export function LandingHero() {
 
                 {/* Compact sparkline — not a full desktop chart */}
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-3">
-                  <p className="mb-2 text-[11px] font-semibold text-slate-300">
+                  <p className="mb-2 text-[12px] font-semibold text-slate-300">
                     Throughput · 6 mo
                   </p>
                   <div
@@ -411,7 +411,7 @@ export function LandingHero() {
                       <p className="mt-1 text-xl font-semibold tabular-nums tracking-tight text-white sm:text-2xl">
                         {s.value}
                       </p>
-                      <p className="mt-0.5 truncate text-[11px] font-medium text-lime-400/90">
+                      <p className="mt-0.5 truncate text-[12px] font-medium text-lime-400/90">
                         {s.delta}
                       </p>
                     </motion.div>
@@ -440,13 +440,13 @@ export function LandingHero() {
                           <p className="font-mono text-[12px] font-medium text-white">
                             {row.code}
                           </p>
-                          <p className="truncate text-[11px] text-slate-400">
+                          <p className="truncate text-[12px] text-slate-400">
                             {row.route}
                           </p>
                         </div>
                         <span
                           className={cn(
-                            "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1",
+                            "shrink-0 rounded-full px-2.5 py-1 text-[12px] font-semibold ring-1",
                             toneClass[row.tone],
                           )}
                         >
