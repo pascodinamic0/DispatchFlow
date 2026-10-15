@@ -50,6 +50,7 @@ export const brand = {
   },
   colors: {
     primary: "#2563EB",
+    lime: "#A3E635",
     navy: "#0B1220",
     background: "#F8FAFC",
     card: "#FFFFFF",
