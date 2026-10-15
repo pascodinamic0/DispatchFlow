@@ -238,3 +238,15 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Boutik mobile lander: lock viewport — no page scroll */
+@media (max-width: 767px) {
+  html.df-mobile-deck,
+  html.df-mobile-deck body.df-mobile-deck {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+  }
+}
+

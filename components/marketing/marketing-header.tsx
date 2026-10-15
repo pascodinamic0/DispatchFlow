@@ -19,7 +19,13 @@ export function MarketingHeader({ variant = "page" }: MarketingHeaderProps) {
   const showMobileMenu = variant === "page";
 
   return (
-    <header className="pt-safe sticky top-0 z-50 border-b border-white/10 bg-[var(--brand-navy)]/90 backdrop-blur-xl">
+    <header
+      className={
+        variant === "landing"
+          ? "pt-safe relative z-50 shrink-0 border-b border-white/10 bg-[var(--brand-navy)] md:sticky md:top-0 md:bg-[var(--brand-navy)]/90 md:backdrop-blur-xl"
+          : "pt-safe sticky top-0 z-50 border-b border-white/10 bg-[var(--brand-navy)]/90 backdrop-blur-xl"
+      }
+    >
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:h-16 sm:gap-4 sm:px-6">
         <Link
           href="/"
