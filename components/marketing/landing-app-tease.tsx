@@ -157,7 +157,7 @@ export function LandingAppTease() {
                 alt={current.image.alt}
                 width={current.image.width}
                 height={current.image.height}
-                className="h-auto w-full object-cover object-left-top"
+                className="h-auto max-h-[220px] w-full object-cover object-left-top sm:max-h-none"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 560px"
               />
             </div>
