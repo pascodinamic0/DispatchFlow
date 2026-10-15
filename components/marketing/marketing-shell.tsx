@@ -14,7 +14,8 @@ export function MarketingShell({
   return (
     <div className="flex min-h-svh flex-col overflow-x-clip bg-background">
       <MarketingHeader variant={variant} />
-      <main className="flex-1 overflow-x-clip">{children}</main>
+      {/* pb-safe on mobile: footer is hidden below md, so main owns home-indicator inset */}
+      <main className="flex-1 overflow-x-clip pb-safe md:pb-0">{children}</main>
       <MarketingFooter />
     </div>
   );

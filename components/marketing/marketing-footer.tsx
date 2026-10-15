@@ -4,11 +4,15 @@ import { Separator } from "@/components/ui/separator";
 import { brand } from "@/lib/brand";
 import { marketing } from "@/lib/marketing";
 
+/**
+ * Site footer — desktop only.
+ * Boutik / iOS pattern: no classic web footer on phone viewports.
+ */
 export function MarketingFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-card pb-safe">
+    <footer className="hidden border-t border-border bg-card pb-safe md:block">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
