@@ -18,8 +18,11 @@ export const metadata: Metadata = {
     template: `%s | ${brand.name}`,
   },
   icons: {
-    icon: "/dispatchflow-icon.svg",
-    apple: "/dispatchflow-icon.svg",
+    icon: [
+      { url: "/dispatchflow-icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "48x48" },
+    ],
+    apple: "/dispatchflow-icon.png",
   },
   appleWebApp: {
     capable: true,
