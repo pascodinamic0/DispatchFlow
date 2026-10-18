@@ -134,6 +134,13 @@ For students and junior IT joining ops teams: learn how policies attach to sessi
 
 Readers evaluating platforms should ask vendors to show these controls on sample data in the first call — not after contract. Curiosity here is cheaper than cleanup later.
 
+
+## Fourteen-day implementation path
+
+Days 1-2: write the loss in one sentence with a recent date (last dispute, last rebuild, last stockout). Days 3-4: name the business object that should hold the truth (student fee line, request ID, order, booking, indicator submission). Days 5-7: capture new events only on that object while keeping the old channel as backup. Days 8-10: compare time-to-answer and dispute rate against the prior week. Days 11-14: retire the shadow process for the pilot scope only — not for the whole organisation yet.
+
+If day 14 is not calmer, the tool is too heavy or the object is wrong. Simplify before blaming culture.
+
 ## Soft pillar (Operations Coverage)
 
 Hard boundaries are part of **Operations Coverage**: the platform should move work without creating new trust leaks between branches and entities. DispatchFlow uses organization-scoped isolation so ops leaders can answer the IT question in one sentence.

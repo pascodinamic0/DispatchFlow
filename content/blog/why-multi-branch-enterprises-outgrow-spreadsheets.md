@@ -141,6 +141,13 @@ Schools, NGOs, and hotels make the same mistake: digitizing everything before th
 
 Prefer upgrading operators' daily loop over buying a finance ERP that nobody opens after training week. The spreadsheet failed because the file could not be the system of record — not because your team lacks discipline.
 
+
+## Fourteen-day implementation path
+
+Days 1-2: write the loss in one sentence with a recent date (last dispute, last rebuild, last stockout). Days 3-4: name the business object that should hold the truth (student fee line, request ID, order, booking, indicator submission). Days 5-7: capture new events only on that object while keeping the old channel as backup. Days 8-10: compare time-to-answer and dispute rate against the prior week. Days 11-14: retire the shadow process for the pilot scope only — not for the whole organisation yet.
+
+If day 14 is not calmer, the tool is too heavy or the object is wrong. Simplify before blaming culture.
+
 ## Soft pillar (Operations Coverage)
 
 Digni's **Operations Coverage** is the family of systems that stop people from being the glue between request, movement, and stock. DispatchFlow is built for that multi-branch loop.

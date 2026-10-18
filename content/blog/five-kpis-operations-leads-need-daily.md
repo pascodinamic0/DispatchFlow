@@ -139,6 +139,18 @@ Professionals stay relevant by learning to read operational signals the way fina
 
 Readers evaluating platforms should ask vendors to show these controls on sample data in the first call — not after contract. Curiosity here is cheaper than cleanup later.
 
+
+## Fourteen-day implementation path
+
+Days 1-2: write the loss in one sentence with a recent date (last dispute, last rebuild, last stockout). Days 3-4: name the business object that should hold the truth (student fee line, request ID, order, booking, indicator submission). Days 5-7: capture new events only on that object while keeping the old channel as backup. Days 8-10: compare time-to-answer and dispute rate against the prior week. Days 11-14: retire the shadow process for the pilot scope only — not for the whole organisation yet.
+
+If day 14 is not calmer, the tool is too heavy or the object is wrong. Simplify before blaming culture.
+
+
+## Mistakes to avoid (expanded)
+
+Do not migrate archives before live balances or live requests are clean. Do not train with slideshows when a thirty-minute real task teaches more. Do not measure vanity (messages sent, logins) while disputes and Friday rebuilds stay flat. Do not buy software designed for card-payment suburbs and constant fiber when your reality is mobile money, dual currency, and dropped signal. Do not shame staff who invented notebooks — they were the system; give them a better one and keep their knowledge.
+
 ## Soft pillar (Operations Coverage)
 
 Seeing the loop every morning is **Operations Coverage** in practice: less babysitting of information, more decisions on exceptions. DispatchFlow leads with the dashboard for that reason.
