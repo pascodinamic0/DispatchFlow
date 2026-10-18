@@ -13,16 +13,13 @@ export const marketing = {
     privacyLastUpdated: "May 22, 2025",
   },
   nav: [
-    { label: "Features", href: "/#features" },
-    { label: "How it works", href: "/#workflow" },
-    { label: "Who it's for", href: "/#audience" },
-    { label: "Blog", href: "/blog" },
-    { label: "FAQ", href: "/#faq" },
+    { label: "Product", href: "/#product" },
+    { label: "Proof", href: "/#proof" },
   ] as const,
   footer: {
     product: [
-      { label: "Features", href: "/#features" },
-      { label: "Workflow", href: "/#workflow" },
+      { label: "Product", href: "/#product" },
+      { label: "Proof", href: "/#proof" },
       { label: "Sign up", href: "/signup" },
       { label: "Sign in", href: "/login" },
     ],

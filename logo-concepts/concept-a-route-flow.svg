@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none" role="img" aria-label="DispatchFlow">
+  <defs>
+    <linearGradient id="a-mark" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#152238"/>
+      <stop offset="1" stop-color="#0B1220"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark: rounded square -->
+  <rect x="4" y="8" width="48" height="48" rx="14" fill="url(#a-mark)"/>
+  <!-- Origin node -->
+  <circle cx="18" cy="40" r="4.5" fill="#A3E635"/>
+  <!-- Destination pin / node -->
+  <circle cx="42" cy="20" r="5" fill="#A3E635"/>
+  <circle cx="42" cy="20" r="2.2" fill="#0B1220"/>
+  <!-- Flow path (bezier) -->
+  <path d="M18 40 C22 28, 28 18, 42 20" stroke="#A3E635" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.95"/>
+  <!-- Motion chevron ticks on path -->
+  <path d="M26 30l4-1.5M31 25.5l3.5-1" stroke="white" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+  <!-- Wordmark -->
+  <text x="68" y="39" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" letter-spacing="-0.02em" fill="#0B1220">Dispatch</text>
+  <text x="185" y="39" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" letter-spacing="-0.02em" fill="#A3E635">Flow</text>
+</svg>

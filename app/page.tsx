@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
 import { redirectIfAuthenticated } from "@/lib/auth/redirect-if-authenticated";
-import { LandingAudience } from "@/components/marketing/landing-audience";
-import { LandingContrast } from "@/components/marketing/landing-contrast";
+import { LandingAppTease } from "@/components/marketing/landing-app-tease";
 import { LandingCta } from "@/components/marketing/landing-cta";
-import { LandingFaq } from "@/components/marketing/landing-faq";
-import { LandingFeatures } from "@/components/marketing/landing-features";
 import { LandingHero } from "@/components/marketing/landing-hero";
-import { LandingProductShowcase } from "@/components/marketing/landing-product-showcase";
+import { LandingMobileDeck } from "@/components/marketing/landing-mobile-deck";
 import { LandingProof } from "@/components/marketing/landing-proof";
-import { LandingRoles } from "@/components/marketing/landing-roles";
-import { LandingStats } from "@/components/marketing/landing-stats";
-import { LandingTrust } from "@/components/marketing/landing-trust";
-import { LandingWorkflow } from "@/components/marketing/landing-workflow";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
 import { siteDefaultMetadata } from "@/lib/seo";
 
@@ -22,18 +15,15 @@ export default async function HomePage() {
 
   return (
     <MarketingShell variant="landing">
-      <LandingHero />
-      <LandingStats />
-      <LandingContrast />
-      <LandingProductShowcase />
-      <LandingFeatures />
-      <LandingWorkflow />
-      <LandingAudience />
-      <LandingRoles />
-      <LandingProof />
-      <LandingTrust />
-      <LandingFaq />
-      <LandingCta />
+      {/* Mobile: fixed single-viewport steps (Boutik / iOS) */}
+      <LandingMobileDeck />
+      {/* Desktop / tablet: classic scroll lander */}
+      <div className="hidden md:contents">
+        <LandingHero />
+        <LandingProof />
+        <LandingAppTease />
+        <LandingCta />
+      </div>
     </MarketingShell>
   );
 }

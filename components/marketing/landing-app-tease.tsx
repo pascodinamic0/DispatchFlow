@@ -1,0 +1,169 @@
+"use client";
+
+import { useRef, useState } from "react";
+import Image from "next/image";
+import { motion, useInView, useReducedMotion } from "motion/react";
+import { ClipboardCheck, Truck } from "lucide-react";
+import { brand } from "@/lib/brand";
+import { cn } from "@/lib/utils";
+
+const screens = [
+  {
+    id: "requests",
+    label: "Requests",
+    fullLabel: "Requests table",
+    icon: ClipboardCheck,
+    title: "Procurement that survives the week",
+    description:
+      "Priority, destination, and status in one calm table — from draft through delivered.",
+    image: brand.marketing.showcaseRequests,
+  },
+  {
+    id: "dispatch",
+    label: "Dispatch",
+    fullLabel: "Dispatch timeline",
+    icon: Truck,
+    title: "Shipments you can actually track",
+    description:
+      "Assign drivers, watch in-transit loads, and close deliveries without chasing chats.",
+    image: brand.marketing.showcaseDispatch,
+  },
+] as const;
+
+export function LandingAppTease() {
+  const [active, setActive] = useState<(typeof screens)[number]["id"]>(
+    "requests",
+  );
+  const current = screens.find((s) => s.id === active) ?? screens[0];
+  const ref = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
+  const show = reduceMotion || inView;
+
+  return (
+    <section
+      id="product"
+      ref={ref}
+      className="relative overflow-x-clip border-y border-border bg-background py-14 sm:py-28"
+      aria-labelledby="landing-tease-heading"
+    >
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-[13px] font-semibold uppercase tracking-wider text-primary">
+            App shell
+          </p>
+          <h2
+            id="landing-tease-heading"
+            className="mt-2 text-[1.75rem] font-bold leading-tight tracking-tight text-foreground sm:text-4xl"
+          >
+            Two screens. Zero spreadsheet archaeology.
+          </h2>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+            A taste of the operator UI — navy chrome, lime status energy, and
+            tables built for real volume.
+          </p>
+        </div>
+
+        <div
+          className="mt-8 flex items-center justify-center gap-2 sm:mt-10"
+          role="tablist"
+          aria-label="App preview screens"
+        >
+          {screens.map((screen) => {
+            const selected = screen.id === active;
+            return (
+              <button
+                key={screen.id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                aria-controls={`tease-panel-${screen.id}`}
+                id={`tease-tab-${screen.id}`}
+                onClick={() => setActive(screen.id)}
+                className={cn(
+                  "inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  selected
+                    ? "bg-[var(--brand-navy)] text-lime-300 shadow-md"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                )}
+              >
+                <screen.icon className="size-4" aria-hidden />
+                <span className="sm:hidden">{screen.label}</span>
+                <span className="hidden sm:inline">{screen.fullLabel}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <motion.div
+          key={current.id}
+          id={`tease-panel-${current.id}`}
+          role="tabpanel"
+          aria-labelledby={`tease-tab-${current.id}`}
+          className="mt-8 grid items-center gap-8 sm:mt-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14"
+          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.35 }}
+        >
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+              {current.title}
+            </h3>
+            <p className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+              {current.description}
+            </p>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <span
+                  className="size-1.5 shrink-0 rounded-full bg-lime-500"
+                  aria-hidden
+                />
+                Keyboard-friendly focus and clear status contrast
+              </li>
+              <li className="flex items-center gap-2">
+                <span
+                  className="size-1.5 shrink-0 rounded-full bg-lime-500"
+                  aria-hidden
+                />
+                Mobile-first density for field updates
+              </li>
+            </ul>
+          </div>
+
+          <div className="relative min-w-0">
+            <div
+              className="absolute -inset-2 rounded-3xl bg-lime-400/10 blur-2xl sm:-inset-3"
+              aria-hidden
+            />
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-[var(--shadow-card)] ring-1 ring-black/5 sm:rounded-2xl">
+              {/* Mobile: native app chrome — no fake macOS traffic lights */}
+              <div className="flex items-center justify-between border-b border-border bg-[var(--brand-navy)] px-4 py-3 sm:hidden">
+                <p className="text-[13px] font-semibold text-white">{current.label}</p>
+                <span className="rounded-full bg-lime-400/15 px-2.5 py-1 text-[12px] font-semibold text-lime-300 ring-1 ring-lime-400/25">
+                  Live
+                </span>
+              </div>
+              {/* Desktop / tablet: window chrome OK */}
+              <div className="hidden items-center gap-2 border-b border-border bg-[var(--brand-navy)] px-4 py-2.5 sm:flex">
+                <span className="size-2 rounded-full bg-red-400/90" aria-hidden />
+                <span className="size-2 rounded-full bg-amber-400/90" aria-hidden />
+                <span className="size-2 rounded-full bg-lime-400/90" aria-hidden />
+                <span className="ml-2 truncate font-mono text-xs text-slate-400">
+                  {brand.name} / {current.fullLabel}
+                </span>
+              </div>
+              <Image
+                src={current.image.src}
+                alt={current.image.alt}
+                width={current.image.width}
+                height={current.image.height}
+                className="h-auto max-h-[220px] w-full object-cover object-left-top sm:max-h-none"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 560px"
+              />
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
